@@ -34,7 +34,7 @@ public class Server extends Thread {
                 Socket socket = serverSocket.accept();
                 ClientThread ct = new ClientThread(socket, klijenti);
                 ct.start();
-                klijenti.add(ct);
+                klijenti.add(ct);  // moze se pomeriti u thread za login!
                 System.out.println("Novi klijent se povezao!");
             }
         } catch (SocketException se) {

@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import transfer.KlijentTransfer;
 import transfer.ServerTransfer;
 
@@ -18,11 +20,7 @@ import transfer.ServerTransfer;
  */
 public class Komunikacija {
 
-    private static Socket socket;
-
-    public Socket getSocket() {
-        return socket;
-    }
+    private Socket socket;
     ObjectInputStream in;
     ObjectOutputStream out;
     private static Komunikacija instance;
@@ -34,11 +32,15 @@ public class Komunikacija {
         return instance;
     }
 
-    public void setSocket(Socket socket) throws IOException {
-        Komunikacija.socket = socket;
-        out = new ObjectOutputStream(this.socket.getOutputStream());
-        in = new ObjectInputStream(this.socket.getInputStream());
-        System.out.println("Podesio sam out!!!");
+    public Komunikacija() {
+        try {
+            this.socket = new Socket("localhost", 9000);
+            out = new ObjectOutputStream(socket.getOutputStream());
+            in = new ObjectInputStream(socket.getInputStream());
+            System.out.println("Podesio sam out!!!");
+        } catch (IOException ex) {
+            Logger.getLogger(Komunikacija.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void posaljiZahtev(KlijentTransfer kt) throws IOException {
